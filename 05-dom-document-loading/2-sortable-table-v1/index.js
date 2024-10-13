@@ -7,7 +7,7 @@ export default class SortableTable {
       this.data = data;
       this.element = this.createElement();
       this.selectSubElements();
-      this.arrow = this.createArrow();
+      this.arrowElement = this.createArrowElement();
   }
 
   createHeaderTemplate() {
@@ -52,13 +52,13 @@ export default class SortableTable {
     return element.firstElementChild;
   }
 
-  createArrow() {
-    const arrow = document.createElement('div');
-    arrow.innerHTML = 
+  createArrowElement() {
+    const arrowElement = document.createElement('div');
+    arrowElement.innerHTML = 
       `<span data-element="arrow" class="sortable-table__sort-arrow">
         <span class="sort-arrow"></span>
       </span>`
-    return arrow.firstElementChild;
+    return arrowElement.firstElementChild;
   }
 
   selectSubElements() {
@@ -91,11 +91,8 @@ export default class SortableTable {
         this.data.sort((a, b) => b[field]-a[field]);
       }
     }
-    
-    //this.headerConfig.forEach((element) => {element.sorted = false});
-    //fieldConfig.sorted = true;
 
-    headerCellElement.append(this.arrow);
+    headerCellElement.append(this.arrowElement);
     headerCellElement.dataset.order = sortOrder;
 
     this.subElements.body.innerHTML = this.createBodyTemplate();
@@ -103,7 +100,7 @@ export default class SortableTable {
 
   destroy(){
     this.element.remove();
-    this.arrow.remove();
+    this.arrowElement.remove();
   }
 }
 

@@ -2,6 +2,7 @@ export default class NotificationMessage {
     static activeNotification;
 
     element;
+    timerId;
 
     constructor (messageText=success, props={}) {
         this.messageText = messageText;
@@ -37,7 +38,7 @@ export default class NotificationMessage {
         NotificationMessage.activeNotification = this;
         parentElement.append(this.element);
 
-        setTimeout(this.remove.bind(this), this.duration);
+        this.timerId = setTimeout(() => this.destroy(), this.duration);
     }
 
     remove() {
@@ -45,6 +46,7 @@ export default class NotificationMessage {
     }
 
     destroy() {
+        clearTimeout(this.timerId);
         this.remove();
     };
 }
