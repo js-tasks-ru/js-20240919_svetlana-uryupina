@@ -41,7 +41,7 @@ export default class ColumnChart {
 
      createTemplate() {
         return `
-        <div class="column-chart" style="--chart-height: ${this.chartHeight}">
+        <div class="column-chart ${this.data.length == 0 ? 'column-chart_loading' : ''}" style="--chart-height: ${this.chartHeight}">
             <div class="column-chart__title">
                 ${this.label}
                 ${this.createLinkTemplate()}
@@ -58,9 +58,6 @@ export default class ColumnChart {
      createElement() {
         const element = document.createElement('div');
         element.innerHTML = this.createTemplate();
-        if (this.data.length == 0) {
-            element.firstElementChild.classList.add('column-chart_loading');
-        }
         return element.firstElementChild;
      }
 
