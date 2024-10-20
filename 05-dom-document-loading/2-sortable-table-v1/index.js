@@ -1,4 +1,4 @@
-export default class SortableTable {
+export default class SortableTableV1 {
   element;
   subElements = {};
 
@@ -68,6 +68,7 @@ export default class SortableTable {
   }
 
   sort(field, sortOrder='asc') {
+
     const fieldConfig = this.headerConfig.find((element) => element.id == field);
     const headerCellElement = this.subElements.header.querySelector(`[data-id=${field}]`);
 
