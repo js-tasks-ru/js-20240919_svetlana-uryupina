@@ -1,5 +1,6 @@
 export default class ColumnChart {
     element;
+    subElements = {};
     data;
     chartHeight=50;
 
@@ -19,6 +20,7 @@ export default class ColumnChart {
         this.formatHeading = formatHeading;
 
         this.element = this.createElement(); 
+        this.selectSubElements();
      }
 
      createLinkTemplate() {
@@ -27,8 +29,12 @@ export default class ColumnChart {
         }
         return '';
      }
-      
-     createChartTemplate() {
+     
+     createHeaderTemplate() {
+      return this.formatHeading(this.value);
+     }
+
+     createBodyTemplate() {
         const maxValue = Math.max(...this.data);
         const scale = this.chartHeight / maxValue;
 
@@ -47,9 +53,9 @@ export default class ColumnChart {
                 ${this.createLinkTemplate()}
             </div>
             <div class="column-chart__container">
-                <div data-element="header" class="column-chart__header">${this.formatHeading(this.value)}</div>
+                <div data-element="header" class="column-chart__header">${this.createHeaderTemplate()}</div>
                 <div data-element="body" class="column-chart__chart">
-                    ${this.createChartTemplate()}
+                    ${this.createBodyTemplate()}
                 </div>
             </div>
         </div>`;
@@ -61,9 +67,17 @@ export default class ColumnChart {
         return element.firstElementChild;
      }
 
+     selectSubElements() {
+      this.element.querySelectorAll('[data-element]').forEach(element => {
+        this.subElements[element.dataset.element] = element;
+      });
+     }
+
      update(data) {
         this.data = data;
-        this.element.innerHTML = this.createTemplate();
+        this.value = this.data.reduce((a,b)=>a+b, 0);
+        this.subElements.header.innerHTML = this.createHeaderTemplate();
+        this.subElements.body.innerHTML = this.createBodyTemplate();
      }
 
      remove() {
